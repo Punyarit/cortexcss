@@ -1,0 +1,45 @@
+{
+  "name": "cortexcss",
+  "displayName": "CortexCSS",
+  "description": "Syntax highlighting for CSS in TypeScript template literals with Cortex-UI",
+  "publisher": "Punyarit",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.79.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "cortexcss",
+        "aliases": [
+          "cortexcss",
+          "cortexcss"
+        ],
+        "extensions": [
+          ".css.ts"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cortexcss",
+        "scopeName": "source.css.ts",
+        "path": "./syntaxes/cortexcss.tmLanguage.json"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "file-type-icon",
+          "name": "cortexcss.css.ts",
+          "extension": "cortexcss.css.ts",
+          "icon": "./icons/cortexcss.svg"
+        }
+      ]
+    }
+  }
+}

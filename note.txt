@@ -1,0 +1,4 @@
+  {
+      "match": "(?<=:\\s)[^$@:][\\w\\s%-]*[^;\\s](?=[;\\s])",
+      "name": "entity.other.attribute-name.css.ts"
+    }
