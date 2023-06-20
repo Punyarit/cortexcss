@@ -8,10 +8,6 @@
       "name": "entity.name.variable.css.ts"
     },
     {
-      "match": ":header-bg",
-      "name": "entity.name.value.css.ts"
-    },
-    {
       "match": "(\\.[\\w-]+(?:\\:[\\w-]+)*(?=\\s*:\\s*))|(:host.*(?=\\s*:\\s*))|(::slotted.*(?=\\s*:\\s*))",
       "name": "entity.name.class.css.ts"
     },
@@ -20,7 +16,7 @@
       "name": "keyword.control.module.ts"
     },
     {
-      "match": "([a-z]+)(?=: `)",
+      "match": "([\\w'-]+)(?=: `)",
       "name": "entity.name.function.ts"
     },
     {
