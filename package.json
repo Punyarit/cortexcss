@@ -3,7 +3,7 @@
   "displayName": "CortexCSS",
   "description": "Syntax highlighting for CSS in TypeScript template literals with Cortex-UI",
   "publisher": "Punyarit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.79.0"
   },
@@ -48,7 +48,14 @@
           "icon": "./icons/cortexcss.svg"
         }
       ]
-    }
+    },
+    "iconThemes": [
+      {
+        "id": "cortexcss-icons",
+        "label": "CortexCSS Icons",
+        "path": "./icons/cortexcss-icon-theme.json"
+      }
+    ]
   },
   "devDependencies": {
     "vscode": "^1.1.37"

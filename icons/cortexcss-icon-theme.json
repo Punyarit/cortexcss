@@ -1,0 +1,11 @@
+{
+  "iconDefinitions": {
+      "_file_cortexcss": {
+          "iconPath": "./cortexcss.svg"
+      }
+  },
+  "fileExtensions": {
+      "css.ts": "_file_cortexcss"
+  },
+  "version": "1.0.0"
+}
