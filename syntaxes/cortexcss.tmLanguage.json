@@ -12,7 +12,7 @@
       "name": "entity.name.class.css.ts"
     },
     {
-      "match": "(export default)",
+      "match": "(export default)|(as const)",
       "name": "keyword.control.module.ts"
     },
     {
