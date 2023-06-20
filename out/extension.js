@@ -16,6 +16,7 @@ function activate(context) {
         },
     });
     // Register document formatting provider
+    // Register document formatting provider
     vscode.languages.registerDocumentFormattingEditProvider(languageConfig, {
         provideDocumentFormattingEdits(document) {
             const indentSize = 2;
@@ -23,6 +24,7 @@ function activate(context) {
             const lines = fullText.split(/\r?\n/);
             let indentedText = '';
             let insideProperty = false;
+            let isFirstProperty = true;
             const isSpecialLine = (line) => {
                 return (line.startsWith('@variable') ||
                     line.startsWith('@keyframes') ||
@@ -33,6 +35,18 @@ function activate(context) {
             };
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i].trimStart();
+                if (line === '') {
+                    continue; // Skip blank lines
+                }
+                if (!line.endsWith(';') &&
+                    line.length > 0 &&
+                    !line.endsWith('{') &&
+                    !line.endsWith('`') &&
+                    !line.endsWith('`,')) {
+                    line += ';';
+                }
+                // Remove spaces before semicolon
+                line = line.replace(/\s*;\s*$/, ';');
                 if (line.endsWith('`,')) {
                     insideProperty = false;
                     indentedText += ' '.repeat(indentSize * 2) + line + '\n'; // 2 tabs for content inside the property
@@ -44,8 +58,12 @@ function activate(context) {
                     indentedText += ' '.repeat(indentSize * 3) + line + '\n'; // 3 tabs for content inside the property if not special line
                 }
                 else if (line.includes(': `')) {
+                    if (!isFirstProperty) {
+                        indentedText += '\n'; // Add a new line before each property except the first one
+                    }
                     insideProperty = true;
                     indentedText += ' '.repeat(indentSize) + line + '\n'; // 1 tab for property name
+                    isFirstProperty = false;
                 }
                 else {
                     indentedText += line + '\n'; // No indent outside properties
