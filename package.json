@@ -11,6 +11,13 @@
   "categories": [
     "Programming Languages"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Punyarit/cortexcss.git"
+  },
+  "activationEvents": [
+    "onCommand:extension.activate"
+  ],
   "contributes": {
     "languages": [
       {
@@ -43,7 +50,7 @@
       ]
     }
   },
-  "dependencies": {
+  "devDependencies": {
     "vscode": "^1.1.37"
   }
 }
