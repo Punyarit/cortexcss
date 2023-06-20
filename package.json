@@ -39,21 +39,11 @@
         "path": "./syntaxes/cortexcss.tmLanguage.json"
       }
     ],
-    "views": {
-      "explorer": [
-        {
-          "id": "file-type-icon",
-          "name": "cortexcss.css.ts",
-          "extension": "cortexcss.css.ts",
-          "icon": "./icons/cortexcss.svg"
-        }
-      ]
-    },
     "iconThemes": [
       {
-        "id": "cortexcss-icons",
-        "label": "CortexCSS Icons",
-        "path": "./icons/cortexcss-icon-theme.json"
+        "id": "material-icons-with-cortex-css",
+        "label": "Material with CortexCSS Icons",
+        "path": "./icons/material-icons.json"
       }
     ]
   },
