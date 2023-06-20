@@ -1,141 +1,49 @@
-it seem i provide wrong requirement then you give me wrong result
-ok we will start with this code:
- provideDocumentFormattingEdits(
-      document: vscode.TextDocument
-    ): vscode.ProviderResult<vscode.TextEdit[]> {
-      const indentSize = 2;
-      const fullText = document.getText();
-      const lines = fullText.split(/\r?\n/);
-      let indentedText = '';
-      let insideProperty = false;
-      let isFirstProperty = true;
+settings.json
 
-      const isSpecialLine = (line: string): boolean => {
-        return (
-          line.startsWith('@variable') ||
-          line.startsWith('@keyframes') ||
-          line.startsWith('@media') ||
-          line.startsWith(':host') ||
-          line.startsWith('::slotted') ||
-          line.startsWith('.')
-        );
-      };
-
-      for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].trimStart();
-
-        if (line === '') {
-          continue; // Skip blank lines
+ "prettier.disableLanguages": ["css.ts"],
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "keyword.control.module.ts",
+        "settings": {
+          "foreground": "#8385ca"
         }
-
-        if (
-          !line.endsWith(';') &&
-          line.length > 0 &&
-          !line.endsWith('{') &&
-          !line.endsWith('`') &&
-          !line.endsWith('`,')
-        ) {
-          line += ';';
+      },
+      {
+        "scope": "entity.name.class.css.ts",
+        "settings": {
+          "foreground": "#e2d49f"
         }
-
-        // Remove spaces before semicolon
-        line = line.replace(/\s*;\s*$/, ';');
-
-        if (line.endsWith('`,')) {
-          insideProperty = false;
-          indentedText += ' '.repeat(indentSize * 2) + line + '\n'; // 2 tabs for content inside the property
-        } else if (insideProperty && isSpecialLine(line)) {
-          indentedText += ' '.repeat(indentSize * 2) + line + '\n'; // 2 tabs for content inside the property
-        } else if (insideProperty) {
-          indentedText += ' '.repeat(indentSize * 3) + line + '\n'; // 3 tabs for content inside the property if not special line
-        } else if (line.includes(': `')) {
-          if (!isFirstProperty) {
-            indentedText += '\n'; // Add a new line before each property except the first one
-          }
-          insideProperty = true;
-          indentedText += ' '.repeat(indentSize) + line + '\n'; // 1 tab for property name
-          isFirstProperty = false;
-        } else {
-          indentedText += line + '\n'; // No indent outside properties
+      },
+      {
+        "scope": "entity.name.function.ts",
+        "settings": {
+          "foreground": "#868aff"
+        }
+      },
+      {
+        "scope": "variable.other.css.ts",
+        "settings": {
+          "foreground": "#d3aaff"
+        }
+      },
+      {
+        "scope": "text.unmatched.css.ts",
+        "settings": {
+          "foreground": "#db8181"
+        }
+      },
+      {
+        "scope": "entity.name.variable.css.ts",
+        "settings": {
+          "foreground": "#d868cf"
+        }
+      },
+      {
+        "scope": "entity.name.value.css.ts",
+        "settings": {
+          "foreground": "#C586C0"
         }
       }
-
-      const fullRange = new vscode.Range(
-        document.positionAt(0),
-        document.positionAt(fullText.length)
-      );
-
-      return [vscode.TextEdit.replace(fullRange, indentedText.trim())]; // Trim to remove trailing newlines
-    },
-
-this is my requirement 
-when end of template literal string ` (back trick) is not this pattern
-this is my expectation below
-export default {
-\theader: `
-\t\t@variable:$header-bg : background-color:red;
-\t\t@keyframes:$example : 0%: bg-primary-500; 100%: bg-primary-200;
-\t\t@media:$xs .header1 : bg-primary-500;
-\t\t.header : h-60px block $header-bg bg-primary-50 flex-center flex test;
-\t\t:host : w-100% h-100%;
-\t\t:host(:hover) : bg-primary-500;`, // expected pattern
-\n
-\tfooter: `
-\t\t.footer : w-100% $footer-color block $test bg-primary-500 h-60px;
-\t\t::slotted(div) : bg-primary-500;`, // expected pattern
-\n
-\tcontent: `
-\t\t.main-content : w-100% flex;
-\t\t.main-content:hover : bg-primary-25;
-\t\t.test : bg-primary-500 $test;`, // expected pattern
-};
-
-PS: \t = 1 tab , \n = 1 new line
-
-this is dirty example (in case  end of template literal `is wrong pattern)
-export default {
-\theader: `
-\t\t@variable:$header-bg : background-color:red;
-\t\t@keyframes:$example : 0%: bg-primary-500; 100%: bg-primary-200;
-\t\t@media:$xs .header1 : bg-primary-500;
-\t\t.header : h-60px block $header-bg bg-primary-50 flex-center flex test;
-\t\t:host : w-100% h-100%;
-\t\t:host(:hover) : bg-primary-500;`, // expected pattern (after last string)
-\n
-\tfooter: `
-\t\t.footer : w-100% $footer-color block $test bg-primary-500 h-60px;
-\t\t::slotted(div) : bg-primary-500;
-`, // unexpected pattern (has newline)
-\n
-\tcontent: `
-\t\t.main-content : w-100% flex;
-\t\t.main-content:hover : bg-primary-25;
-\t\t.test : bg-primary-500 $test;/t/t/t/t/t`, // unexpected pattern (has more spacing)
-};
-
-PS: \t = 1 tab , \n = 1 new line
-
-when it be wrong pattern (same above example). it should format to this pattern
-//here is expect pattern
-export default {
-\theader: `
-\t\t@variable:$header-bg : background-color:red;
-\t\t@keyframes:$example : 0%: bg-primary-500; 100%: bg-primary-200;
-\t\t@media:$xs .header1 : bg-primary-500;
-\t\t.header : h-60px block $header-bg bg-primary-50 flex-center flex test;
-\t\t:host : w-100% h-100%;
-\t\t:host(:hover) : bg-primary-500;`, // expected pattern
-\n
-\tfooter: `
-\t\t.footer : w-100% $footer-color block $test bg-primary-500 h-60px;
-\t\t::slotted(div) : bg-primary-500;`, // expected pattern
-\n
-\tcontent: `
-\t\t.main-content : w-100% flex;
-\t\t.main-content:hover : bg-primary-25;
-\t\t.test : bg-primary-500 $test;`, // expected pattern
-};
-
-PS: \t = 1 tab , \n = 1 new line
-
-Please update
+    ]
+  },
